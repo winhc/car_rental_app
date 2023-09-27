@@ -4,7 +4,7 @@ A new Flutter project for GUSTO Tech Training.
 
 Testing             |
 :-------------------------:|
-<img src="https://github.com/winhc/car_rental_app/blob/master/screenshot/testing_record.gif" width="306" height="760" /> | 
+<img src="https://github.com/winhc/car_rental_app/blob/master/screenshot/testing_record.gif" width="390" height="844" /> | 
 
 ## Getting Started
 
