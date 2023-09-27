@@ -151,7 +151,7 @@ class RentController extends GetxController {
       LoadingDialogUtil.closeAppLoadingDialog(Get.overlayContext!);
       if (response.statusCode == 200) {
         Get.back();
-        removeBookingItem();
+        getBookingList();
         Get.snackbar(
           "Delete booking",
           response.data['message'] ?? "Success",
@@ -167,10 +167,5 @@ class RentController extends GetxController {
       }
       throw Exception(error);
     }
-  }
-
-  void removeBookingItem() {
-    bookingList.remove(selectedBooking.value);
-    update();
   }
 }
