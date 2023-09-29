@@ -14,7 +14,17 @@ class ExploreCarDetailView extends GetView<ExploreController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () {
+                controller.onFavouriteIconClick();
+              },
+              icon: Obx(() => Icon(controller.isFavourite.value
+                  ? CupertinoIcons.heart_fill
+                  : CupertinoIcons.heart)))
+        ],
+      ),
       body: Obx(
         () => ListView(
           children: [

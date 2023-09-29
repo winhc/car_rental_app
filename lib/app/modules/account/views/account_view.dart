@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -29,7 +30,17 @@ class AccountView extends GetView<AccountController> {
           ),
           ListTile(
             onTap: () {
-              controller.logout();
+              controller.goToFavouriteView();
+            },
+            leading: const Icon(CupertinoIcons.heart_fill),
+            title: const Text("Your favourite"),
+          ),
+          const Divider(
+            thickness: 0.5,
+          ),
+          ListTile(
+            onTap: () {
+              controller.onLogoutClick(context);
             },
             leading: const Icon(Icons.logout_outlined),
             title: const Text("Logout"),

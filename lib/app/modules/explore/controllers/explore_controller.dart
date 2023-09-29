@@ -1,4 +1,5 @@
 import 'package:car_rental_app/app/modules/explore/models/car_model.dart';
+import 'package:car_rental_app/app/modules/explore/models/local_car_model.dart';
 import 'package:car_rental_app/app/modules/explore/models/rental_model.dart';
 import 'package:car_rental_app/app/modules/explore/providers/car_provider.dart';
 import 'package:dio/dio.dart';
@@ -15,6 +16,8 @@ class ExploreController extends GetxController {
   final selectedCar = Car().obs;
   String heroTagName = "";
   final isFavourite = false.obs;
+  final isFavouriteDataFetching = false.obs;
+  final favouriteCarList = <Car>[].obs;
 
   @override
   onInit() {
@@ -67,6 +70,7 @@ class ExploreController extends GetxController {
 
   onGridViewItemSelected(Car car) {
     selectedCar(car);
+    checkIsFavurite();
     heroTagName = "image${car.id}";
     Get.to(const ExploreCarDetailView());
   }
@@ -112,5 +116,46 @@ class ExploreController extends GetxController {
       }
       throw Exception(error);
     }
+  }
+
+  Future<void> getFavouriteCarList() async {
+    try {
+      isFavouriteDataFetching(true);
+      favouriteCarList.clear();
+      List<LocalCar> response = await _carProvider.getAllFavouriteCars();
+      isFavouriteDataFetching(false);
+      for (var localCar in response) {
+        favouriteCarList.add(localCar.car!);
+      }
+    } catch (error) {
+      isFetching(false);
+      Get.snackbar(
+        "Car Rental",
+        "Favourite data fetch error!",
+      );
+      throw Exception(error);
+    }
+  }
+
+  void checkIsFavurite() async {
+    int carCount =
+        await _carProvider.getFavouriteCarCountById(selectedCar.value.id!);
+    if (carCount > 0) {
+      isFavourite(true);
+    } else {
+      isFavourite(false);
+    }
+  }
+
+  void onFavouriteIconClick() {
+    LocalCar localCar =
+        LocalCar(id: selectedCar.value.id, car: selectedCar.value);
+    if (isFavourite.value) {
+      _carProvider.deleteFavouriteCar(selectedCar.value.id!);
+    } else {
+      _carProvider.addFavouriteCar(localCar);
+    }
+    checkIsFavurite();
+    getFavouriteCarList();
   }
 }
